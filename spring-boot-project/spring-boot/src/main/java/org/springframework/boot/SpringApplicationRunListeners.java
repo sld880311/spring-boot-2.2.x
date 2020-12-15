@@ -42,6 +42,7 @@ class SpringApplicationRunListeners {
 		this.listeners = new ArrayList<>(listeners);
 	}
 
+//	EventPublishingRunListener：启动事件发布监听器，主要用来发布启动事件
 	void starting() {
 		for (SpringApplicationRunListener listener : this.listeners) {
 			listener.starting();

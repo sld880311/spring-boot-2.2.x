@@ -34,8 +34,12 @@ org.springframework.boot.liquibase.LiquibaseServiceLocatorApplicationListener
 
 # Environment Post Processors
 org.springframework.boot.env.EnvironmentPostProcessor=\
+//为springCloud提供的扩展类
 org.springframework.boot.cloud.CloudFoundryVcapEnvironmentPostProcessor,\
+// 支持json环境变量
 org.springframework.boot.env.SpringApplicationJsonEnvironmentPostProcessor,\
+// springBoo2提供的一个包装类，主要将`StandardServletEnvironment
+// `包装成`SystemEnvironmentPropertySourceEnvironmentPostProcessor`对象
 org.springframework.boot.env.SystemEnvironmentPropertySourceEnvironmentPostProcessor,\
 org.springframework.boot.reactor.DebugAgentEnvironmentPostProcessor
 

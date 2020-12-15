@@ -56,6 +56,7 @@ public class EventPublishingRunListener implements SpringApplicationRunListener,
 		this.args = args;
 		this.initialMulticaster = new SimpleApplicationEventMulticaster();
 		for (ApplicationListener<?> listener : application.getListeners()) {
+//			将spring.factories中的监听器传递到SimpleApplicationEventMulticaster中
 			this.initialMulticaster.addApplicationListener(listener);
 		}
 	}
@@ -67,6 +68,11 @@ public class EventPublishingRunListener implements SpringApplicationRunListener,
 
 	@Override
 	public void starting() {
+		// 创建application启动事件`ApplicationStartingEvent`
+//		使用SimpleApplicationEventMulticaster实现
+//		使用线程池来完成监听时间的异步处理（线程池为空则同步处理）
+//		org.springframework.context.ApplicationListener
+//		最终执行listener.onApplicationEvent(event);
 		this.initialMulticaster.multicastEvent(new ApplicationStartingEvent(this.application, this.args));
 	}
 

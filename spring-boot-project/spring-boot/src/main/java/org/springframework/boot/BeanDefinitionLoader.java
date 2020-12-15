@@ -132,15 +132,19 @@ class BeanDefinitionLoader {
 
 	private int load(Object source) {
 		Assert.notNull(source, "Source must not be null");
+//		启动注解类型
 		if (source instanceof Class<?>) {
 			return load((Class<?>) source);
 		}
+//		启动xml解析
 		if (source instanceof Resource) {
 			return load((Resource) source);
 		}
+//		启动包扫描
 		if (source instanceof Package) {
 			return load((Package) source);
 		}
+//		直接加载字符串类型
 		if (source instanceof CharSequence) {
 			return load((CharSequence) source);
 		}
@@ -153,7 +157,11 @@ class BeanDefinitionLoader {
 			GroovyBeanDefinitionSource loader = BeanUtils.instantiateClass(source, GroovyBeanDefinitionSource.class);
 			load(loader);
 		}
+//		判断启动了是否包含@component注解（支持递归查找）
+//		把spring bean中的对象封装成BeanDefinition，然后添加到BeanDefinitionMap中
 		if (isComponent(source)) {
+//			在查找到@Component注解后，表面该对象为spring bean，然后会将其信息包装成 beanDefinitaion ，添加到容器的 beanDefinitionMap中
+//			启动类就被包装成AnnotatedGenericBeanDefinition
 			this.annotatedReader.register(source);
 			return 1;
 		}
@@ -274,6 +282,7 @@ class BeanDefinitionLoader {
 	}
 
 	private boolean isComponent(Class<?> type) {
+//		@SpringBootApplication---》@SpringBootConfiguration---》@Configuration---》@Component注解
 		// This has to be a bit of a guess. The only way to be sure that this type is
 		// eligible is to make a bean definition out of it and try to instantiate it.
 		if (MergedAnnotations.from(type, SearchStrategy.TYPE_HIERARCHY).isPresent(Component.class)) {
